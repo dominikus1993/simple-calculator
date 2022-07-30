@@ -1,4 +1,4 @@
-#[derive(Debug, PartialEq)]
+#[derive(Debug, PartialEq, Clone, Copy)]
 pub enum Sign {
     Plus,
     Minus,
@@ -8,7 +8,7 @@ pub enum Sign {
     BracketClose,
 }
 
-#[derive(Debug, PartialEq)]
+#[derive(Debug, PartialEq, Clone, Copy)]
 pub enum Element {
     Number(i32),
     Operator(Sign),
