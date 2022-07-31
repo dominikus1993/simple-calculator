@@ -38,6 +38,16 @@ impl Sign {
         }
     }
 
+    pub fn calculate(&self, a: i32, b: i32) -> i32 {
+        match self {
+            Sign::Plus => a + b,
+            Sign::Minus => a - b,
+            Sign::Multipy => a * b,
+            Sign::Divide => a / b,
+            _ => panic!("Unknown sign"),
+        }
+    }
+
     pub fn is_higher_or_equal_priority(&self, other: Sign) -> bool {
         let first_priority = self.priority();
         let second_priority = other.priority();
@@ -53,11 +63,21 @@ mod tests {
     use super::*;
     
     #[test]
-    fn test_calculation() {
+    fn test_is_higher_or_equal_priority() {
         let test_data = vec![((Sign::Multipy, Sign::Plus), true), ((Sign::Plus, Sign::Multipy), false), ((Sign::Plus, Sign::Plus), true), ((Sign::Minus, Sign::Plus), true), ((Sign::Minus, Sign::Minus), true)];
 
         for ((first, second), expected) in test_data {
             let subject = first.is_higher_or_equal_priority(second);
+            assert_eq!(subject, expected);
+        }
+    }
+
+    #[test]
+    fn test_calculation() {
+        let test_data = vec![((Sign::Plus, 2, 3), 5), ((Sign::Minus, 2, 3), -1), ((Sign::Multipy, 2, 3), 6), ((Sign::Divide, 2, 3), 0)];
+
+        for ((sign, first, second), expected) in test_data {
+            let subject = sign.calculate(first, second);
             assert_eq!(subject, expected);
         }
     }

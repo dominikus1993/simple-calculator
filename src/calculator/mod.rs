@@ -5,7 +5,7 @@ mod rpn;
 fn calc(expression: &str) -> i32 {
     let clean_text = parser::clean(expression);
     let rpn_not = rpn::parse(clean_text);
-    return 0;
+    rpn::calculate(rpn_not)
 }
 
 #[cfg(test)]
@@ -19,7 +19,7 @@ mod tests {
 
         for (data, expected) in test_data {
             let subject = calc(data);
-            assert_eq!(subject, expected);
+            assert_eq!(subject, expected, "Failed for {}", data);
         }
     }
 }
