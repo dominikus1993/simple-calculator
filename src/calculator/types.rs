@@ -38,6 +38,20 @@ impl Sign {
         }
     }
 
+    pub fn number_from_chars(chars: &Vec<char>) -> Element {
+        let mut num = String::new();
+        for c in chars {
+            if c.is_digit(10) {
+                num.push(*c)
+            } else {
+                break;
+            }
+        }
+        let res = num.parse::<i32>().unwrap();
+        Element::Number(res)
+    }
+    
+
     pub fn calculate(&self, a: i32, b: i32) -> i32 {
         match self {
             Sign::Plus => a + b,
@@ -78,6 +92,16 @@ mod tests {
 
         for ((sign, first, second), expected) in test_data {
             let subject = sign.calculate(first, second);
+            assert_eq!(subject, expected);
+        }
+    }
+
+    #[test]
+    fn test_parse_numbers() {
+        let test_data = vec![(vec!['2', '0', '1'], Element::Number(201)), (vec!['2', '0', '1', '0'], Element::Number(2010))];
+
+        for (data, expected) in test_data {
+            let subject = Sign::number_from_chars(&data);
             assert_eq!(subject, expected);
         }
     }

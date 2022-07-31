@@ -1,5 +1,7 @@
 mod calculator;
 
 fn main() {
-    println!("Hello, world!");
+    let expression = "2137 + 69 * 2";
+    let result = calculator::calc(expression);
+    println!("Result of expression = {} is {}", expression, result);
 }

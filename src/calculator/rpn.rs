@@ -1,17 +1,15 @@
 use super::types::{Element, Sign};
 
 
-pub fn parse(expression: String) -> Vec<Element> {
+pub fn parse(expression: Vec<Element>) -> Vec<Element> {
     let mut res = vec![];
-    let mut stack = vec![];
-    for sign in expression.chars() {
-        match sign {
-            '0'..='9' => {
-                let number = sign.to_digit(10).unwrap();
-                res.push(Element::Number(number as i32));
+    let mut stack: Vec<Sign> = vec![];
+    for element in expression {
+        match element {
+            Element::Number(_) => {
+                res.push(element);
             },
-            '+' | '-' | '*' | '/' => {
-                let sign = Sign::from_char(sign);
+           Element::Operator(sign @ Sign::Divide) |  Element::Operator(sign @ Sign::Multipy) | Element::Operator(sign @  Sign::Plus) | Element::Operator(sign @  Sign::Minus) => {
                 if stack.is_empty() {
                     stack.push(sign);
                 } else {
@@ -29,17 +27,16 @@ pub fn parse(expression: String) -> Vec<Element> {
                     }
                 }
             },
-            '(' => {
-                stack.push(Sign::BracketOpen);
+            Element::Operator(sign @ Sign::BracketOpen) => {
+                stack.push(sign);
             },
-            ')' => {
+            Element::Operator(Sign::BracketClose) => {
                 let mut last_sign = stack.pop().unwrap();
                 while last_sign != Sign::BracketOpen {
                     res.push(Element::Operator(last_sign));
                     last_sign = stack.pop().unwrap();
                 }
             },
-            _ => panic!("Unknown sign"),
         }
     }
     if !stack.is_empty() {
@@ -73,7 +70,7 @@ pub fn calculate (elements: Vec<Element>) -> i32 {
 
 #[cfg(test)]
 mod tests {
-    use crate::calculator::{types::Sign};
+    use crate::calculator::{types::Sign, parser};
 
     // Note this useful idiom: importing names from outer (for mod tests) scope.
     use super::*;
@@ -88,7 +85,8 @@ mod tests {
             ];
 
         for (data, expected) in test_data {
-            let subject = parse(data.to_owned());
+            let elems = parser::parse_to_elements(data.to_owned());
+            let subject = parse(elems);
             assert_eq!(subject, expected, "we are testing rpn notation parsong with {} and {:?}", data, expected);
         }
     }
