@@ -16,7 +16,7 @@ mod tests {
 
     #[test]
     fn test_calculation() {
-        let test_data = vec![("2*2", 4), ("2+2", 4), ("2-2", 0), ("2/2", 1), ("2+2*2", 6), ("2 + 5", 7), ("21+37", 58)];
+        let test_data = vec![("2*2", 4), ("2+2", 4), ("2-2", 0), ("2/2", 1), ("2+2*2", 6), ("2*2+2", 6), ("2 + 5", 7), ("21+37", 58)];
 
         for (data, expected) in test_data {
             let subject = calc(data);

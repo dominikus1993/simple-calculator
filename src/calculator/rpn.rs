@@ -18,10 +18,16 @@ pub fn parse(expression: Vec<Element>) -> Vec<Element> {
                         stack.push(last);
                         stack.push(sign);
                     } else {
-                        let mut last_sign = last;
-                        while last_sign.is_higher_or_equal_priority(sign) {
-                            res.push(Element::Operator(last_sign));
-                            last_sign = stack.pop().unwrap();
+                        res.push(Element::Operator(last));
+                        let mut last_sign = stack.pop();
+                        while last_sign.is_some() {
+                            let v = last_sign.unwrap();
+                            if v.is_higher_or_equal_priority(sign) {
+                                res.push(Element::Operator(v));
+                                last_sign = stack.pop();
+                            } else {
+                                break;
+                            }
                         }
                         stack.push(sign);
                     }
@@ -82,6 +88,7 @@ mod tests {
                 ("2*(5+2)", vec![Element::Number(2), Element::Number(5), Element::Number(2), Element::Operator(Sign::Plus), Element::Operator(Sign::Multipy)]),
                 ("3+2*6", vec![Element::Number(3), Element::Number(2), Element::Number(6), Element::Operator(Sign::Multipy), Element::Operator(Sign::Plus)]),
                 ("2+2*2", vec![Element::Number(2), Element::Number(2), Element::Number(2), Element::Operator(Sign::Multipy), Element::Operator(Sign::Plus)]),
+                ("2*2+2", vec![Element::Number(2), Element::Number(2), Element::Operator(Sign::Multipy), Element::Number(2), Element::Operator(Sign::Plus)]),
             ];
 
         for (data, expected) in test_data {
