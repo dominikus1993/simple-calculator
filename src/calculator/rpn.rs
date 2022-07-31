@@ -56,7 +56,7 @@ pub fn parse(expression: Vec<Element>) -> Vec<Element> {
 }
 
 
-pub fn calculate (elements: Vec<Element>) -> i32 {
+pub fn calculate (elements: Vec<Element>) -> i64 {
     let mut stack = vec![];
     for element in elements {
         match element {

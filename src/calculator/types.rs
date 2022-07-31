@@ -10,7 +10,7 @@ pub enum Sign {
 
 #[derive(Debug, PartialEq, Clone, Copy)]
 pub enum Element {
-    Number(i32),
+    Number(i64),
     Operator(Sign),
 }
 
@@ -47,12 +47,12 @@ impl Sign {
                 break;
             }
         }
-        let res = num.parse::<i32>().unwrap();
+        let res = num.parse::<i64>().unwrap();
         Element::Number(res)
     }
     
 
-    pub fn calculate(&self, a: i32, b: i32) -> i32 {
+    pub fn calculate(&self, a: i64, b: i64) -> i64 {
         match self {
             Sign::Plus => a + b,
             Sign::Minus => a - b,

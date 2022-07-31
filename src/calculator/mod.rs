@@ -2,7 +2,7 @@ mod types;
 mod parser;
 mod rpn;
 
-pub fn calc(expression: &str) -> i32 {
+pub fn calc(expression: &str) -> i64 {
     let clean_text = parser::clean(expression);
     let elements = parser::parse_to_elements(clean_text);
     let rpn_not = rpn::parse(elements);
