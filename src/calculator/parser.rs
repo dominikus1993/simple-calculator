@@ -8,7 +8,7 @@ pub fn clean(input: &str) -> String {
 
 pub fn parse_to_elements(expression: String) -> Vec<Element> {
     let mut res = vec![];
-    let mut nums = vec![];
+    let mut nums = String::new();
     for c in expression.chars() {
         match c {
             '0'..='9' => {
@@ -16,7 +16,7 @@ pub fn parse_to_elements(expression: String) -> Vec<Element> {
             },
             '+' | '-' | '*' | '/' | '(' | ')' => {
                 if !nums.is_empty() {
-                    res.push(Sign::number_from_chars(&nums));
+                    res.push(Sign::number_from_string(&nums));
                     nums.clear();
                 }
                 res.push(Element::Operator(Sign::from_char(c)));
@@ -25,8 +25,7 @@ pub fn parse_to_elements(expression: String) -> Vec<Element> {
         }
     }
     if !nums.is_empty() {
-        res.push(Sign::number_from_chars(&nums));
-        nums.clear();
+        res.push(Sign::number_from_string(&nums));
     }
     res
 }
